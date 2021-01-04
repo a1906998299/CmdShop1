@@ -7,9 +7,8 @@ import java.util.Scanner;
 public class Test {
     public static void main(String[] args) throws ClassNotFoundException, IOException {
         boolean bo = true;
-        boolean buy = true;
-        int cartsCount=0;
         int choose;
+
         while (bo) {
             System.out.println("请输入用户名：");
             Scanner sc = new Scanner(System.in);
@@ -37,8 +36,6 @@ public class Test {
                         System.out.print("\t" + product.getPrice());
                         System.out.println("\t" + product.getpDesc());
                     }
-                    System.out.println("请输入商品ID把该商品加入购物车");
-                    String pId = sc.next();
                     int count = 0;
                     /*
                     创建一个购物车的数组：存的是商品
@@ -47,14 +44,14 @@ public class Test {
                     /*
                     根据此ID去Excel中去查找是否有该ID的商品信息，如果有则返回该商品即可
                      */
-                        inProduct = null;
-                        inProduct = Class.forName("Test").getResourceAsStream("/product.xlsx");
-                        Product product = readProductExcel.getProductById(pId, inProduct);
-                    while(buy) {
+                    System.out.println("请输入商品ID把该商品加入购物车");
+                    String pId = sc.next();
+                    inProduct = null;
+                    inProduct = Class.forName("Test").getResourceAsStream("/product.xlsx");
+                    Product product = readProductExcel.getProductById(pId, inProduct);
+                    carts[count] = product;
+                    while(true) {
                         System.out.println("要购买的商品价格：" + product.getPrice());
-                        if (product != null) {
-                            carts[count++] = product;
-                        }
                         System.out.println("继续购买商品请按1");
                         System.out.println("查看购物车请按2");
                         System.out.println("结束购买请按3");
@@ -77,7 +74,7 @@ public class Test {
                             product = readProductExcel.getProductById(pId, inProduct);
                             System.out.println("要购买的商品价格：" + product.getPrice());
                             if (product != null) {
-                                carts[count++] = product;
+                                carts[count+1] = product;
                             }
                         }
                         else if (choose == 2) {
@@ -86,19 +83,17 @@ public class Test {
                          */
                             System.out.println("购物车内商品如下：");
                             for (Product p : carts) {
+                                if(p != null) {
                                     System.out.print(p.getpId());
                                     System.out.print("\t" + p.getpName());
                                     System.out.print("\t" + p.getPrice());
                                     System.out.println("\t" + p.getpDesc());
-                                    cartsCount++;
-                                    if(cartsCount == count){
-                                        break;
-                                    }
+                                }
                             }
                         }
                         else if(choose == 3){
                             System.out.println("购买结束");
-                            buy = false;
+                            break;
                         }
                     }
                     break;
